@@ -140,7 +140,7 @@ public class Client {
         if (query.getCmd().equals(Query.RECEIVE_TXT)) {
             Message message = query.getMessage();
             for (MessageListener listener : messageListeners) {
-                listener.onMessage(message.getSender(), message.getContent(), message.getMsgHeight());
+                listener.onMessage(message);
             }
         } else if (query.getCmd().equals(Query.RECEIVE_FILE)) {
 

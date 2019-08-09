@@ -70,7 +70,7 @@ public class MainFrame extends JFrame implements UserStatusListener {
                     if (client.login(LoginDialog.getLogin(), LoginDialog.getPassword())) {
                         loginBtn.setEnabled(false);
                         logoutBtn.setEnabled(true);
-                    }else{
+                    } else {
                         System.out.println("Erreur de login");
                     }
                 } catch (IOException | ClassNotFoundException ex) {
@@ -95,7 +95,7 @@ public class MainFrame extends JFrame implements UserStatusListener {
         JPanel centerPanelContainer = new JPanel(bl);
         container.add(centerPanelContainer, BorderLayout.CENTER);
         centerPanelTopPanel = new JPanel();
-        centerPanelContainer.add(centerPanelTopPanel,BorderLayout.NORTH);
+        centerPanelContainer.add(centerPanelTopPanel, BorderLayout.NORTH);
         centerPanelContainer.setBackground(Color.red);
         centerPanelLayout = new CardLayout();
         centerPanel = new JPanel(centerPanelLayout);
@@ -139,7 +139,15 @@ public class MainFrame extends JFrame implements UserStatusListener {
         leftPanelBox.add(userPresenceStatusPane);
         leftPanelBox.revalidate();
         statusPaneMap.put(sender, userPresenceStatusPane);
-        centerPanel.add(new JLabel(sender.getFullName()), sender.getEmail());
+        centerPanel.add(new MessagePane(this));
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public UserPresenceStatusPane getCurrentUserPresenceStatusPane() {
+        return currentUserPresenceStatusPane;
     }
 
     @Override
