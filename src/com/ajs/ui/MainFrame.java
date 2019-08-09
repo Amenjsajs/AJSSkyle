@@ -1,4 +1,4 @@
-package com.ajs.UI;
+package com.ajs.ui;
 
 import com.ajs.client.Client;
 import com.ajs.client.UserStatusListener;

@@ -13,7 +13,7 @@ public class RoundField extends JTextArea {
     public RoundField(int rows, int columns) {
         super(rows, columns);
         // We must be non-opaque since we won't fill all pixels.
-        // This will also stop the UI from filling our background.
+        // This will also stop the ui from filling our background.
         setOpaque(false);
 
         // Add an empty border around us to compensate for

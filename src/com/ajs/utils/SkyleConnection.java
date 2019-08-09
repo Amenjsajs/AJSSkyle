@@ -1,4 +1,4 @@
-package com.ajs.Utils;
+package com.ajs.utils;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

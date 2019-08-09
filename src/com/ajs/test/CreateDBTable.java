@@ -1,6 +1,6 @@
 package com.ajs.test;
 
-import com.ajs.Utils.SkyleConnection;
+import com.ajs.utils.SkyleConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

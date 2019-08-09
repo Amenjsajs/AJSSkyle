@@ -1,4 +1,4 @@
-package com.ajs.UI;
+package com.ajs.ui;
 
 import javax.swing.*;
 import java.awt.*;

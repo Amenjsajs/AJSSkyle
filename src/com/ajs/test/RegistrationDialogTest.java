@@ -1,6 +1,6 @@
 package com.ajs.test;
 
-import com.ajs.UI.RegistrationDialog;
+import com.ajs.ui.RegistrationDialog;
 import com.ajs.model.User;
 
 import javax.swing.*;

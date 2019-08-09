@@ -1,4 +1,4 @@
-package com.ajs.UI;
+package com.ajs.ui;
 
 import com.ajs.components.DirectoriesPath;
 import com.ajs.components.ImageResizer;

@@ -1,6 +1,6 @@
 package com.ajs.db.factory;
 
-import com.ajs.Utils.SkyleConnection;
+import com.ajs.utils.SkyleConnection;
 import com.ajs.db.dao.MessageDAO;
 import com.ajs.db.dao.UserDAO;
 

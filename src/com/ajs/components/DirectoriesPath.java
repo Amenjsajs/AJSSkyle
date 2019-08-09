@@ -6,9 +6,9 @@ import java.nio.file.Paths;
 
 public final class DirectoriesPath {
     private static final Path CURRENT = Paths.get("").toAbsolutePath();
-    private static final Path AVATAR = Paths.get(CURRENT+"/sauvegarde/images/avatar");
-    private static final Path IMAGES_SAVED = Paths.get(CURRENT+"/sauvegarde/images");
-    private static final Path FILES_SAVED = Paths.get(CURRENT+"/sauvegarde/files");
+    private static final Path AVATAR = Paths.get(CURRENT+"/save/images/avatar");
+    private static final Path IMAGES_SAVED = Paths.get(CURRENT+"/save/images");
+    private static final Path FILES_SAVED = Paths.get(CURRENT+"/save/files");
     private static final Path IMAGES = Paths.get(CURRENT+"/images");
     private static final Path ICON = Paths.get(CURRENT+"/images/icon");
 
