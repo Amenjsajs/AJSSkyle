@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="LGoodDatePicker-10.4.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/LGoodDatePicker-10.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/postgresql-42.2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json-simple-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
