@@ -139,7 +139,7 @@ public class MainFrame extends JFrame implements UserStatusListener {
         leftPanelBox.add(userPresenceStatusPane);
         leftPanelBox.revalidate();
         statusPaneMap.put(sender, userPresenceStatusPane);
-        centerPanel.add(new MessagePane(this));
+        centerPanel.add(new MessagePane(this), sender.getEmail());
     }
 
     public Client getClient() {

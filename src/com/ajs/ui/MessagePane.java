@@ -27,11 +27,11 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
     private JPanel messagePanel;
 
     private JTextArea messageArea;
-    public MessagePane(MainFrame mainFrame){
+
+    public MessagePane(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
         this.client = mainFrame.getClient();
         this.user = mainFrame.getClient().getUser();
-        this.userPresenceStatusPane = mainFrame.getCurrentUserPresenceStatusPane();
         client.addMessageListenr(this);
         client.addUserStatusWritingListener(this);
 
@@ -49,7 +49,7 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
         JPanel bottomPanel = new JPanel();
         add(bottomPanel, BorderLayout.SOUTH);
 
-        messageArea = new JTextArea(1,80);
+        messageArea = new JTextArea(1, 80);
         messageArea.setLineWrap(true);
 
         JScrollPane messageAreaScrollPane = new JScrollPane(messageArea);
@@ -75,15 +75,17 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
 
                             Message message = new Message();
                             message.setSender(user);
-                            message.setReceiver(userPresenceStatusPane.getUser());
+                            message.setReceiver(mainFrame.getCurrentUserPresenceStatusPane().getUser());
                             message.setContent(msg);
                             message.setType(Query.SEND_TXT);
                             message.setMsgHeight(msgHeight);
                             message.setCreatedDate(new Date());
                             client.msg(message);
 
+                            JPanel panel = new JPanel(new BorderLayout());
                             MessageShowPane messageShowPane = new MessageShowPane(message, FlowLayout.RIGHT);
-                            messagePanelBox.add(messageShowPane);
+                            panel.add(messageShowPane);
+                            messagePanelBox.add(panel);
 
                             messageArea.setRows(1);
                             messageArea.setColumns(80);
@@ -97,7 +99,6 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
                         }
                     }
                 }
-
             }
 
             @Override
@@ -126,9 +127,13 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
 
     @Override
     public void onMessage(Message message) {
-        if(user.compareTo(message.getSender()) == 0){
+        UserPresenceStatusPane userPresenceStatusPane = mainFrame.getCurrentUserPresenceStatusPane();
+        if (userPresenceStatusPane.getUser().compareTo(message.getSender()) == 0) {
             MessageShowPane messageShowPane = new MessageShowPane(message, FlowLayout.LEFT);
-            messagePanelBox.add(messageShowPane);
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.add(messageShowPane);
+            messagePanelBox.add(panel);
+            messagePanelBox.revalidate();
         }
     }
 }

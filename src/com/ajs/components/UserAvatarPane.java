@@ -20,7 +20,7 @@ public class UserAvatarPane extends JPanel {
     private void createUserProfileAvatar() {
         int width = 250;
         int height = 250;
-        Image cadre = new ImageIcon("images/empty_round.png").getImage();
+        Image cadre = new ImageIcon(DirectoriesPath.getImagesPath()+"/empty_round.png").getImage();
         cadre = ImageResizer.scaleImage(cadre, width, height);
         BufferedImage trans = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) trans.getGraphics();

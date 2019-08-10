@@ -136,9 +136,11 @@ public class Client {
         oos.writeObject(query);
     }
 
-    private void handleMessage(Query query) {
+    private void handleMessage(Query query) throws IOException {
         if (query.getCmd().equals(Query.RECEIVE_TXT)) {
             Message message = query.getMessage();
+            setOrSaveUserAvatar(query.getMessage().getSender());
+            setOrSaveUserAvatar(query.getMessage().getReceiver());
             for (MessageListener listener : messageListeners) {
                 listener.onMessage(message);
             }
@@ -156,17 +158,20 @@ public class Client {
     private void handleOnline(Query query) throws IOException {
         User sender = query.getMessage().getSender();
         if (sender != null) {
-            File avatarFile = new File(DirectoriesPath.getAvatarPath() + "/" + sender.getAvatarName());
-            if (!Files.exists(avatarFile.toPath())) {
-                sender.setAvatarPath(DirectoriesPath.getAvatarPath() + "/" + sender.getAvatarName());
-                sender.saveAvatar();
-            }
-            sender.setAvatar(new ImageIcon(DirectoriesPath.getAvatarPath() + "/" + sender.getAvatarName()).getImage());
-
+            setOrSaveUserAvatar(sender);
             for (UserStatusListener listener : userStatusListeners) {
                 listener.online(sender);
             }
         }
+    }
+
+    private void setOrSaveUserAvatar(User user) throws IOException {
+        File avatarFile = new File(DirectoriesPath.getAvatarPath() + "/" + user.getAvatarName());
+        if (!Files.exists(avatarFile.toPath())) {
+            user.setAvatarPath(DirectoriesPath.getAvatarPath() + "/" + user.getAvatarName());
+            user.saveAvatar();
+        }
+        user.setAvatar(new ImageIcon(DirectoriesPath.getAvatarPath() + "/" + user.getAvatarName()).getImage());
     }
 
     private void handleOffline(Query query) {
