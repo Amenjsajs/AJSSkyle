@@ -49,10 +49,12 @@ public class MessageShowPane extends JPanel {
         JPanel areaPanel = new JPanel(bl);
         areaPanel.add(userFirstName,BorderLayout.NORTH);
 
-        BorderRound borderRound = new BorderRound(dim.width,dim.height);
-        borderRound.add(msgArea);
-
-        areaPanel.add(borderRound,BorderLayout.CENTER);
+//        BorderRound borderRound = new BorderRound(dim.width,dim.height);
+//        borderRound.add(msgArea);
+        JPanel borderRoundedPanel = new JPanel();
+        borderRoundedPanel.setBorder(BorderFactory.createCompoundBorder(new RoundedBorder(), BorderFactory.createEmptyBorder()));
+        borderRoundedPanel.add(msgArea);
+        areaPanel.add(borderRoundedPanel,BorderLayout.CENTER);
         panel.add(areaPanel);
         add(panel);
     }

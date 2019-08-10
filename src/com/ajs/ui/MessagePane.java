@@ -15,15 +15,15 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.Date;
 
 public class MessagePane extends JPanel implements MessageListener, UserWritingStatusListener {
     private MainFrame mainFrame;
     private Client client;
     private User user;
-    private UserPresenceStatusPane userPresenceStatusPane;
 
-    private Box messagePanelBox;
+    //private Box messagePanelBox;
     private JPanel messagePanel;
 
     private JTextArea messageArea;
@@ -41,9 +41,11 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
         topLabel.setHorizontalAlignment(JLabel.LEFT);
         add(topLabel, BorderLayout.NORTH);
 
-        messagePanelBox = new Box(BoxLayout.Y_AXIS);
+        //messagePanelBox = new Box(BoxLayout.Y_AXIS);
         messagePanel = new JPanel();
-        messagePanel.add(messagePanelBox);
+        BoxLayout bxl = new BoxLayout(messagePanel,BoxLayout.Y_AXIS);
+        messagePanel.setLayout(bxl);
+        //messagePanel.add(messagePanelBox);
         add(new JScrollPane(messagePanel), BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
@@ -62,6 +64,12 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
             @Override
             public void keyPressed(KeyEvent e) {
                 String msg = messageArea.getText();
+                try {
+                    client.notifyWriting(user,mainFrame.getCurrentUserPresenceStatusPane().getUser(), false);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
                 if ((e.getKeyCode() == KeyEvent.VK_ENTER) && ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0)) {
                     int i = messageArea.getCaretPosition();
                     messageArea.insert("\n", i);
@@ -85,7 +93,7 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
                             JPanel panel = new JPanel(new BorderLayout());
                             MessageShowPane messageShowPane = new MessageShowPane(message, FlowLayout.RIGHT);
                             panel.add(messageShowPane);
-                            messagePanelBox.add(panel);
+                            messagePanel.add(messageShowPane);
 
                             messageArea.setRows(1);
                             messageArea.setColumns(80);
@@ -103,7 +111,11 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
 
             @Override
             public void keyReleased(KeyEvent e) {
-                super.keyReleased(e);
+                try {
+                    client.notifyWriting(user,mainFrame.getCurrentUserPresenceStatusPane().getUser(), true);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
@@ -117,12 +129,20 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
             height = 112;
         }
         scrollPane.setPreferredSize(new Dimension(800, height + 20));
+        scrollPane.revalidate();
         parent.revalidate();
     }
 
     @Override
-    public void onWriting(User receiver) {
-
+    public void onWriting(Message message) {
+        UserPresenceStatusPane userPresenceStatusPane = mainFrame.getCurrentUserPresenceStatusPane();
+        if (userPresenceStatusPane.getUser().compareTo(message.getSender()) == 0) {
+            if(message.getContent().equals("stop")){
+                userPresenceStatusPane.getDotAnimated().stop();
+            }else{
+                userPresenceStatusPane.getDotAnimated().start();
+            }
+        }
     }
 
     @Override
@@ -132,8 +152,8 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
             MessageShowPane messageShowPane = new MessageShowPane(message, FlowLayout.LEFT);
             JPanel panel = new JPanel(new BorderLayout());
             panel.add(messageShowPane);
-            messagePanelBox.add(panel);
-            messagePanelBox.revalidate();
+            messagePanel.add(messageShowPane);
+            messagePanel.revalidate();
         }
     }
 }

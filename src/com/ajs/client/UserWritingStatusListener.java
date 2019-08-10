@@ -1,7 +1,7 @@
 package com.ajs.client;
 
-import com.ajs.model.User;
+import com.ajs.model.Message;
 
 public interface UserWritingStatusListener {
-    void onWriting(User receiver);
+    void onWriting(Message message);
 }

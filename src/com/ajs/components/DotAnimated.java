@@ -106,13 +106,14 @@ public class DotAnimated extends JPanel {
         Thread t = new Thread(() -> {
             try {
                 int i = 0;
-                while (i++ <1 ) {
+                while (i++ < 1) {
                     Thread.sleep(3000);
                 }
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
+            } finally {
+                show = false;
             }
-            show = false;
         });
         t.start();
     }

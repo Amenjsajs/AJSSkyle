@@ -58,10 +58,18 @@ public class Client {
         oos.writeObject(query);
     }
 
-    public void notifyWriting(Message message) throws IOException {
+    public void notifyWriting(User sender, User receiver, boolean stopped) throws IOException {
+        Message message = new Message();
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setType(Query.WRITING);
+
+        if(stopped) message.setContent("stop");
+        else message.setContent("continuous");
+
         Query query = new Query();
-        query.setCmd(message.getType());
         query.setMessage(message);
+        query.setCmd(Query.WRITING);
         oos.writeObject(query);
     }
 
@@ -151,7 +159,7 @@ public class Client {
 
     private void handleUserWriting(Query query) {
         for (UserWritingStatusListener listener : userWritingStatusListeners) {
-            listener.onWriting(query.getMessage().getSender());
+            listener.onWriting(query.getMessage());
         }
     }
 

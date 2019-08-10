@@ -29,7 +29,7 @@ public class UserPresenceStatusPane extends JPanel {
         numberMessageNotRead = new NumberMessageNotRead();
         dotAnimated = new DotAnimated(3, 12, 50);
 
-        setPreferredSize(new Dimension(width,height));
+        setPreferredSize(new Dimension(width, height));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         JLabel label = new JLabel();
