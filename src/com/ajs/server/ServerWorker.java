@@ -69,7 +69,6 @@ public class ServerWorker extends Thread {
         Query response = new Query();
         for (ServerWorker worker : server.getWorkers()) {
             if (query.getMessage().getReceiver().compareTo(worker.user) == 0) {
-
                 response.setCmd(Query.RECEIVE_WRITING);
                 response.setMessage(query.getMessage());
                 worker.sendMessage(response);
@@ -153,7 +152,7 @@ public class ServerWorker extends Thread {
         User userSearch = userDAO.findByEmailAndPassword(sender.getEmail(), sender.getPassword());
         if (userSearch == null) {
             System.err.println(String.format("Erreur de connexion pour login=%s et password=%s", sender.getEmail(), sender.getPassword()));
-            server.getWorkers().remove(this);
+
             response.setCmd(Query.LOGIN_FAILED);
             message.setContent("Erreur Login");
             response.setMessage(message);
@@ -186,15 +185,17 @@ public class ServerWorker extends Thread {
             }
 
             for (ServerWorker worker : workers) {
-                if (user.compareTo(worker.getUser()) != 0) {
-                    Query query1 = new Query();
-                    Message message1 = new Message();
-                    query1.setCmd(Query.ONLINE);
+                if (worker.getUser() != null) {
+                    if (user.compareTo(worker.getUser()) != 0) {
+                        Query query1 = new Query();
+                        Message message1 = new Message();
+                        query1.setCmd(Query.ONLINE);
 
-                    message1.setContent(String.format("%s est connecté", worker.getUser().getFullName()));
-                    message1.setSender(user);
-                    query1.setMessage(message1);
-                    worker.sendMessage(query1);
+                        message1.setContent(String.format("%s est connecté", worker.getUser().getFullName()));
+                        message1.setSender(user);
+                        query1.setMessage(message1);
+                        worker.sendMessage(query1);
+                    }
                 }
             }
         }
