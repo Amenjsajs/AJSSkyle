@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainFrame extends JFrame implements UserStatusListener {
+    private final Container container;
+    private final JPanel topPanelLeftPanel;
     private Client client;
     private JPanel leftPanel;
     private JPanel topPanel;
@@ -47,9 +49,15 @@ public class MainFrame extends JFrame implements UserStatusListener {
         client.connect();
         client.addUserStatusListener(this);
 
-        Container container = getContentPane();
-        topPanel = new JPanel();
-        ((FlowLayout) topPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
+        container = getContentPane();
+        topPanel = new JPanel(new BorderLayout());
+
+        JPanel topPanelRightPanel = new JPanel();
+        topPanel.add(topPanelRightPanel, BorderLayout.EAST);
+
+        topPanelLeftPanel = new JPanel();
+        topPanel.add(topPanelLeftPanel, BorderLayout.WEST);
+
         registrationBtn = new JButton("Créer un compte");
 
         registrationBtn.addActionListener((e -> {
@@ -61,16 +69,21 @@ public class MainFrame extends JFrame implements UserStatusListener {
                 }
             }
         }));
-        topPanel.add(registrationBtn);
+        topPanelRightPanel.add(registrationBtn);
 
         loginBtn = new JButton("Se connecter");
         loginBtn.addActionListener(e -> {
             if (LoginDialog.showDialog() == LoginDialog.CONNECT_OPTION) {
                 try {
                     if (client.login(LoginDialog.getLogin(), LoginDialog.getPassword())) {
+                        UserPresenceStatusPane userPresenceStatusPane = new UserPresenceStatusPane(client.getUser());
+                        topPanelLeftPanel.add(userPresenceStatusPane);
+                        container.revalidate();
                         loginBtn.setEnabled(false);
                         logoutBtn.setEnabled(true);
                     } else {
+                        String errorMsg = String.format("Erreur de login pour \nEmail: %s\nMot de passe: %s", LoginDialog.getLogin(), LoginDialog.getPassword());
+                        JOptionPane.showMessageDialog(null, errorMsg, "Erreur de login", JOptionPane.INFORMATION_MESSAGE);
                         System.out.println("Erreur de login");
                     }
                 } catch (IOException | ClassNotFoundException ex) {
@@ -78,10 +91,25 @@ public class MainFrame extends JFrame implements UserStatusListener {
                 }
             }
         });
-        topPanel.add(loginBtn);
+        topPanelRightPanel.add(loginBtn);
         logoutBtn = new JButton("Se déconnecter");
         logoutBtn.setEnabled(false);
-        topPanel.add(logoutBtn);
+        logoutBtn.addActionListener(e -> {
+            try {
+                client.logout();
+                client = new Client("localhost", 8899);
+                client.connect();
+                client.addUserStatusListener(this);
+                loginBtn.setEnabled(true);
+                logoutBtn.setEnabled(false);
+                topPanelLeftPanel.removeAll();
+                container.revalidate();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        topPanelRightPanel.add(logoutBtn);
+
         container.add(topPanel, BorderLayout.NORTH);
 
         leftPanel = new JPanel();
@@ -115,6 +143,14 @@ public class MainFrame extends JFrame implements UserStatusListener {
         setVisible(true);
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public UserPresenceStatusPane getCurrentUserPresenceStatusPane() {
+        return currentUserPresenceStatusPane;
+    }
+
     @Override
     public void online(User sender) {
         UserPresenceStatusPane userPresenceStatusPane = new UserPresenceStatusPane(sender);
@@ -140,14 +176,6 @@ public class MainFrame extends JFrame implements UserStatusListener {
         leftPanelBox.revalidate();
         statusPaneMap.put(sender, userPresenceStatusPane);
         centerPanel.add(new MessagePane(this), sender.getEmail());
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public UserPresenceStatusPane getCurrentUserPresenceStatusPane() {
-        return currentUserPresenceStatusPane;
     }
 
     @Override

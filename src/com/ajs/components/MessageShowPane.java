@@ -11,7 +11,7 @@ public class MessageShowPane extends JPanel {
     private UserAvatarPane userAvatarPane;
     private Message message;
     public MessageShowPane(Message message, int alignment){
-        userAvatarPane = new UserAvatarPane(message.getReceiver());
+        userAvatarPane = new UserAvatarPane(message.getSender());
         FlowLayout fl = new FlowLayout();
         fl.setAlignment(alignment);
         fl.setAlignOnBaseline(true);

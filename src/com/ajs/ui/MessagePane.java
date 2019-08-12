@@ -128,6 +128,7 @@ public class MessagePane extends JPanel implements MessageListener, UserWritingS
         } else if (height >= 112) {
             height = 112;
         }
+        System.out.println(height);
         scrollPane.setPreferredSize(new Dimension(800, height + 20));
         scrollPane.revalidate();
         parent.revalidate();

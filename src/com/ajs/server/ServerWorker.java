@@ -33,7 +33,13 @@ public class ServerWorker extends Thread {
         try {
             handleClientSocket();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            try {
+                handleLogout();
+                System.out.println(user.getFullName() + " s'est déconnecter");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            server.getWorkers().remove(this);
         }
     }
 
@@ -127,18 +133,19 @@ public class ServerWorker extends Thread {
         }
 
         for (ServerWorker worker : workers) {
-            if (user.compareTo(worker.getUser()) != 0) {
-                Query query = new Query();
-                Message message = new Message();
-                query.setCmd(Query.OFFLINE);
+            if (worker.getUser() != null) {
+                if (user.compareTo(worker.getUser()) != 0) {
+                    Query query = new Query();
+                    Message message = new Message();
+                    query.setCmd(Query.OFFLINE);
 
-                message.setContent(String.format("%s s'est connecté", worker.getUser().getFullName()));
-                message.setSender(user);
-                query.setMessage(message);
-                worker.sendMessage(query);
+                    message.setContent(String.format("%s s'est connecté", worker.getUser().getFullName()));
+                    message.setSender(user);
+                    query.setMessage(message);
+                    worker.sendMessage(query);
+                }
             }
         }
-        System.out.println(user.getFullName() + " s'est déconnecté");
         workers.remove(this);
         clientSocket.close();
     }

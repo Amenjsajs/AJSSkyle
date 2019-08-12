@@ -125,7 +125,7 @@ public class Client {
                 }
             }
         } catch (Exception ex) {
-            System.out.println("Erreur readMessageLoop ");
+            //System.out.println("Erreur readMessageLoop ");
             ex.printStackTrace();
             try {
                 socket.close();
