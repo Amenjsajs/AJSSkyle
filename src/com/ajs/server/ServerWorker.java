@@ -35,7 +35,9 @@ public class ServerWorker extends Thread {
         } catch (IOException | ClassNotFoundException e) {
             try {
                 handleLogout();
-                System.out.println(user.getFullName() + " s'est déconnecter");
+                if (user != null) {
+                    System.out.println(user.getFullName() + " s'est déconnecter");
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

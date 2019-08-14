@@ -2,6 +2,7 @@ package com.ajs.ui;
 
 import com.ajs.client.Client;
 import com.ajs.client.UserStatusListener;
+import com.ajs.components.ImageResizer;
 import com.ajs.components.UserPresenceStatusPane;
 import com.ajs.model.User;
 
@@ -58,7 +59,10 @@ public class MainFrame extends JFrame implements UserStatusListener {
         topPanelLeftPanel = new JPanel();
         topPanel.add(topPanelLeftPanel, BorderLayout.WEST);
 
-        registrationBtn = new JButton("Créer un compte");
+        registrationBtn = new JButton("");
+        registrationBtn.setToolTipText("Créer un nouveau compte");
+        Image registerIcon = ImageResizer.scaleImage(new ImageIcon("images/icon/register-icon.jpg").getImage(), 20, 20);
+        registrationBtn.setIcon(new ImageIcon(registerIcon));
 
         registrationBtn.addActionListener((e -> {
             if (RegistrationDialog.showRegisterDialog() == RegistrationDialog.OK_OPTION) {
@@ -71,7 +75,10 @@ public class MainFrame extends JFrame implements UserStatusListener {
         }));
         topPanelRightPanel.add(registrationBtn);
 
-        loginBtn = new JButton("Se connecter");
+        loginBtn = new JButton("");
+        Image loginIcon = ImageResizer.scaleImage(new ImageIcon("images/icon/login-icon.jpg").getImage(),20,20);
+        loginBtn.setToolTipText("Se connecter");
+        loginBtn.setIcon(new ImageIcon(loginIcon));
         loginBtn.addActionListener(e -> {
             if (LoginDialog.showDialog() == LoginDialog.CONNECT_OPTION) {
                 try {
@@ -92,7 +99,10 @@ public class MainFrame extends JFrame implements UserStatusListener {
             }
         });
         topPanelRightPanel.add(loginBtn);
-        logoutBtn = new JButton("Se déconnecter");
+        logoutBtn = new JButton("");
+        logoutBtn.setToolTipText("Se déconnecter");
+        Image logoutIcon = ImageResizer.scaleImage(new ImageIcon("images/icon/logout-icon.jpg").getImage(),20,20);
+        logoutBtn.setIcon(new ImageIcon(logoutIcon));
         logoutBtn.setEnabled(false);
         logoutBtn.addActionListener(e -> {
             try {

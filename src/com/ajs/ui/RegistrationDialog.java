@@ -51,6 +51,7 @@ public class RegistrationDialog extends JDialog {
 
     public RegistrationDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
+        setIconImage(ImageResizer.scaleImage(new ImageIcon("images/icon/register-icon.jpg").getImage(), 20, 20));
         setResizable(false);
         validFieldPaneBgColor = Color.GREEN;
         invalidFieldPaneBgColor = Color.RED;
@@ -217,8 +218,8 @@ public class RegistrationDialog extends JDialog {
             });
 
             JButton btn = new JButton("");
-            Icon showIcon = new ImageIcon(ImageResizer.scaleImage(new ImageIcon(DirectoriesPath.getIconPath()+"/show_password_icon.png").getImage(), 30, 30));
-            Icon hideIcon = new ImageIcon(ImageResizer.scaleImage(new ImageIcon(DirectoriesPath.getIconPath()+"/hide_password_icon.png").getImage(), 30, 30));
+            Icon showIcon = new ImageIcon(ImageResizer.scaleImage(new ImageIcon(DirectoriesPath.getIconPath()+"/show-password-icon.jpg").getImage(), 30, 30));
+            Icon hideIcon = new ImageIcon(ImageResizer.scaleImage(new ImageIcon(DirectoriesPath.getIconPath()+"/hide-password-icon.jpg").getImage(), 30, 30));
             btn.setIcon(showIcon);
             btn.setPreferredSize(new Dimension(40, 40));
             btn.setBounds((310 + insets.left) - 40, insets.top, 40, 40);
